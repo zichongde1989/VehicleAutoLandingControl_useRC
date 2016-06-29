@@ -72,7 +72,7 @@ typedef enum
 #define DAC_THROTTLE_UOUT_CONTER  1.60  
 
 /* 输出电压方向控制*/
-#define DAC_PITCH_UOUT_DIRECTIOPN     (1)   /* 经测试，pitch杆向下时，电压增大    */  
+#define DAC_PITCH_UOUT_DIRECTIOPN     (-1)   /* 经测试，pitch杆向下时，电压增大    */  
 #define DAC_ROLL_UOUT_DIRECTIOPN      (-1)   /* 经测试，roll杆向右时电压变小       */
 #define DAC_THROTTLE_UOUT_DIRECTIOPN  (1)    /* 经测试，throttle杆向前时，电压变大 */
 

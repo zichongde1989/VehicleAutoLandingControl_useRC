@@ -49,7 +49,7 @@ typedef struct gP_ControlParamStruct
   */
 /* XY方向移动速度（仅用于定点模式下） */
 #define   DATAPROCESS_XY_MOVE_VELOCITY_MAX        (0.8f)      /*!< 最大移动速度，单位：m/s,TODO::与飞控参数设定一致  */    
-#define   DATAPROCESS_XY_MOVE_VELOCITY_LIMIT      (0.2f)      /*!< 移动速度限制，单位：m/s  */ 
+#define   DATAPROCESS_XY_MOVE_VELOCITY_LIMIT      (0.3f)      /*!< 移动速度限制，单位：m/s  */ 
 
 /* Z方向移动速度（仅用于定点模式下） */
 #define   DATAPROCESS_Z_MOVE_VELOCITY_MAX         (0.6f)      /*!< 最大移动速度，单位：m/s,TODO::与飞控参数设定一致  */    
@@ -63,18 +63,18 @@ typedef struct gP_ControlParamStruct
 /* XY方向参数 */
 #define   DATAPROCESS_X_CONTROL_VALUE_P_MIN       (0.0f)           /*!< 比例控制-P参数最小值           */
 #define   DATAPROCESS_X_CONTROL_VALUE_P_MAX       (0.5f)           /*!< 比例控制-P参数最大值           */
-#define   DATAPROCESS_X_CONTROL_VALUE_P_DEFAULT   (0.1f)         /*!< 比例控制-P参数默认值           */      
+#define   DATAPROCESS_X_CONTROL_VALUE_P_DEFAULT   (0.08f)         /*!< 比例控制-P参数默认值           */      
 //TODO::细致调节DEFAULT参数
 
 /* XY方向参数 */
 #define   DATAPROCESS_Y_CONTROL_VALUE_P_MIN       (0.0f)           /*!< 比例控制-P参数最小值           */
 #define   DATAPROCESS_Y_CONTROL_VALUE_P_MAX       (0.5f)           /*!< 比例控制-P参数最大值           */
-#define   DATAPROCESS_Y_CONTROL_VALUE_P_DEFAULT   (0.1f)         /*!< 比例控制-P参数默认值           */      
+#define   DATAPROCESS_Y_CONTROL_VALUE_P_DEFAULT   (0.08f)         /*!< 比例控制-P参数默认值           */      
 
 /* Z方向控制参数 */
 #define   DATAPROCESS_Z_CONTROL_VALUE_P_MIN       (0.0f)           /*!< 比例控制-P参数最小值           */
 #define   DATAPROCESS_Z_CONTROL_VALUE_P_MAX       (0.4f )          /*!< 比例控制-P参数最大值           */
-#define   DATAPROCESS_Z_CONTROL_VALUE_P_DEFAULT   (0.1f)         /*!< 比例控制-P参数默认值           */      
+#define   DATAPROCESS_Z_CONTROL_VALUE_P_DEFAULT   (0.05f)         /*!< 比例控制-P参数默认值           */      
 
 
 

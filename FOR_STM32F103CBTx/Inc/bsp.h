@@ -71,8 +71,8 @@ extern  osMessageQId PRINT_QUEUES_HANDLE;
 
 
 /* 调试信息输出定义 */
-#define SYS_DEBUG_ON              1
-#define SYS_DEBUG_TRACK_ON        1
+#define SYS_DEBUG_ON              0
+#define SYS_DEBUG_TRACK_ON        0
 
 #define SYS_INFO(fmt,arg...)           printf("<<-DEBUG-INFO->>%s@%d: "fmt"\n",__func__,__LINE__,##arg)
 #define SYS_ERROR(fmt,arg...)          printf("<<-DEBUG-ERROR->>%s@%d: "fmt"\n",__func__,__LINE__,##arg)

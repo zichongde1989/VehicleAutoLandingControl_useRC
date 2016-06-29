@@ -68,6 +68,8 @@ typedef enum
 }ControlMode_t;
 
 
+/* 定义手动模式时，模式选择开关电平 */
+#define MODE_MANUL_SELECT_PIN_STATE   GPIO_PIN_SET
 
 /************************* 导出的函数定义 ****************************/
 /**

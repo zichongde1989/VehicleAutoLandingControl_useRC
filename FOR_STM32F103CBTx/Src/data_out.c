@@ -33,11 +33,11 @@ uint8_t ControlOut_Init( void )
 {
   /* 输出俯仰控制电压 */
   //SYS_DEBUG(" DAC_PITCH=%f\n",DAC_PITCH_UOUT_CONTER);  
-  ControlOut_SetDACx_Voltage( DAC_PITCH, DAC_PITCH_UOUT_CONTER );
+  ControlOut_SetDACx_Voltage( DAC_PITCH, DAC_PITCH_UOUT_CENTER );
   
   /* 输出横滚控制电压 */
   //SYS_DEBUG(" DAC_ROLL =%f\n",DAC_ROLL_UOUT_CONTER);  
-  ControlOut_SetDACx_Voltage( DAC_ROLL, DAC_ROLL_UOUT_CONTER );
+  ControlOut_SetDACx_Voltage( DAC_ROLL, DAC_ROLL_UOUT_CENTER );
   
   /* 输出油门控制电压 */
   //SYS_DEBUG(" DAC_THROTTLE =%f\n",DAC_THROTTLE_UOUT_MIN);  

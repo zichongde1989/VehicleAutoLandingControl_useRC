@@ -131,6 +131,9 @@ int main(void)
   /*  初始化控制模式  */
   ModeControl_Init(  );
   
+  /* 初始化主控模块 */
+  DataProcess_Init( );
+  
   /*启动循环接收DMA*/
   HAL_UART_Receive_DMA(&BSP_USART_SENSOR, (uint8_t*)&gUSART1_RX_TMP, 1);      
 
@@ -419,34 +422,39 @@ void StartMainTask(void const * argument)
 
   /* USER CODE BEGIN 5 */
   SYS_DEBUG_TRACK();
-
+#ifdef  DEBUG_ON    
+  uint32_t  l_time;
+  uint32_t  c_time;
+  l_time = c_time = 0;
+#endif  
   /* Infinite loop */
   for(;;)
   {
     SYS_DEBUG("one loop!\n");
 //    PrintStackRest();
+                         
+    
     
     /* 查询模式开关状态，如果是自动，则切换为指定的自动模式 */
-//    ModeControl_CheckAndSetAutoMode( CONTROL_MODE_AUTO_PITCH_ROLL  );
-    ModeControl_CheckAndSetAutoMode( CONTROL_MODE_AUTO_ALL  );
+    ModeControl_CheckAndSetAutoMode( CONTROL_MODE_AUTO_PITCH_ROLL  );
     
-    /* 测试 */
-    ControlData_t ControlData;
-    ControlData.pitch = 3.1;
-    ControlData.roll = 2.1;
-    ControlData.throttle = 1.1;
-    ControlOut_PutControlData( &ControlData );
-    
-    osDelay(2000);
-    
-    SensorData_t SensorData;
-    SensorData.time_boot_ms = 10000;
-    SensorData.x = 1010;
-    SensorData.y = 2020;
-    SensorData.z = 3030;
-    SensorData.convariance = 1.2;
-    DataParse_PutData( &SensorData );
-    osDelay(2000);
+#ifdef  DEBUG_ON    
+    /* 用于调试 */
+    c_time = osKernelSysTick();
+    if(  (c_time - l_time)*portTICK_PERIOD_MS > 2000 )
+    {
+      SensorData_t SensorData;
+      SensorData.time_boot_ms = 10000;
+      SensorData.x = 0100;
+      SensorData.y = 0200;
+      SensorData.z = 0200;
+      SensorData.convariance = 1.2;
+      DataParse_PutData( &SensorData );
+    }
+    l_time = c_time; 
+#endif
+
+    osDelay(200);
   }
   /* USER CODE END 5 */ 
 }

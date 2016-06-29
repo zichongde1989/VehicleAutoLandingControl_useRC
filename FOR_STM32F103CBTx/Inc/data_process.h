@@ -21,16 +21,12 @@
 
 
 
-/**
-  * @brief  对传感器数据进行处理，输出控制数据
-  * @param  ptr: 待校验数据指针
-  * @param  len: 待校验数据长度
-  * 
-  * @retval uint8_t: 校验值
-  */
+
+
+/* 导出函数 */
+uint8_t   DataProcess_Init( void );
+void      DataProcess_ReleaseControl(  ControlData_t* pControlData   );
 uint8_t   DataProcess_DoProcess( SensorData_t* pSensorData, ControlData_t* pControlData  );
-
-
 
 
 #endif

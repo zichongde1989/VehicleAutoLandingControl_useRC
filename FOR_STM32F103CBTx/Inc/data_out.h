@@ -58,23 +58,37 @@ typedef enum
 #define DAC_THROTTLE_OFFSET   0  
 
 /* 输出电压限制 */
-#define DAC_PITCH_UOUT_MIN        0.5   /* 最低输出电压，单位V */
-#define DAC_ROLL_UOUT_MIN         0.5 
-#define DAC_THROTTLE_UOUT_MIN     0.5
+#define DAC_PITCH_UOUT_MIN        0.42   /* 最低输出电压，单位V */
+#define DAC_ROLL_UOUT_MIN         0.48 
+#define DAC_THROTTLE_UOUT_MIN     0.38
 
-#define DAC_PITCH_UOUT_MAX        3.1    /* 最高输出电压，单位V */ 
-#define DAC_ROLL_UOUT_MAX         3.1 
-#define DAC_THROTTLE_UOUT_MAX     3.1  
+#define DAC_PITCH_UOUT_MAX        2.98    /* 最高输出电压，单位V */ 
+#define DAC_ROLL_UOUT_MAX         3.02 
+#define DAC_THROTTLE_UOUT_MAX     2.92  
 
 /* 输出电压控制中心 */
-#define DAC_PITCH_UOUT_CONTER     1.75   /* 输出电压中间值，单位V */  
-#define DAC_ROLL_UOUT_CONTER      1.75
-#define DAC_THROTTLE_UOUT_CONTER  1.75  
+#define DAC_PITCH_UOUT_CENTER     1.74   /* 输出电压中间值，单位V */  
+#define DAC_ROLL_UOUT_CENTER      1.76
+#define DAC_THROTTLE_UOUT_CONTER  1.60  
+
+/* 输出电压方向控制*/
+#define DAC_PITCH_UOUT_DIRECTIOPN     (1)   /* 经测试，pitch杆向下时，电压增大    */  
+#define DAC_ROLL_UOUT_DIRECTIOPN      (-1)   /* 经测试，roll杆向右时电压变小       */
+#define DAC_THROTTLE_UOUT_DIRECTIOPN  (1)    /* 经测试，throttle杆向前时，电压变大 */
+
+
+/* 输出电压调节区-限定飞行控制过程的调节范围 */
+#define DAC_UOUT_CONTROL_ZONE_SCAL       1.0    /* 调节区缩放，调试时用来控制输出可调节范围，保证飞行安全 。 */  
+//TODO::调试完毕后，将该值值为1
+
+#define DAC_PITCH_UOUT_CONTROL_ZONE       (  ( (DAC_PITCH_UOUT_MAX   ) - (DAC_PITCH_UOUT_CENTER   ) )/DAC_UOUT_CONTROL_ZONE_SCAL  )   
+#define DAC_ROLL_UOUT_CONTROL_ZONE        (  ( (DAC_ROLL_UOUT_MAX    ) - (DAC_ROLL_UOUT_CENTER    ) )/DAC_UOUT_CONTROL_ZONE_SCAL  )   
+#define DAC_THROTTLE_UOUT_CONTROL_ZONE    (  ( (DAC_THROTTLE_UOUT_MAX) - (DAC_THROTTLE_UOUT_CONTER) )/DAC_UOUT_CONTROL_ZONE_SCAL  )     
 
 
 /* 默认的输出电压 */
-#define DAC_PITCH_DERFALT_OUT     (DAC_PITCH_UOUT_CONTER)   /* 输出电压中间值，单位V */  
-#define DAC_ROLL_DERFALT_OUT      (DAC_ROLL_UOUT_CONTER)
+#define DAC_PITCH_DERFALT_OUT     (DAC_PITCH_UOUT_CENTER)   /* 输出电压中间值，单位V */  
+#define DAC_ROLL_DERFALT_OUT      (DAC_ROLL_UOUT_CENTER)
 #define DAC_THROTTLE_DERFALT_OUT  (DAC_THROTTLE_UOUT_MIN)  
 
 

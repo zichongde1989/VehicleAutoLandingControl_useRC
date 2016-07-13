@@ -25,8 +25,8 @@
 
 /* µ¼³öº¯Êý */
 uint8_t   DataProcess_Init( void );
-void      DataProcess_ReleaseControl(  ControlData_t* pControlData   );
 uint8_t   DataProcess_DoProcess( SensorData_t* pSensorData, ControlData_t* pControlData  );
+void      DataProcess_CheackProcessTime(  void  );
 
 
 #endif

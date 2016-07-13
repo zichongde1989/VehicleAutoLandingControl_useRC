@@ -99,6 +99,7 @@ typedef enum
 /************************* 导出的函数定义 ****************************/
 uint8_t ControlOut_Init( void );
 uint8_t ControlOut_PutControlData( ControlData_t*  pControlData );
+void   ControlOut_ReleaseControl(  void  );
 
 #endif
 

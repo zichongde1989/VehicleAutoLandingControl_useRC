@@ -434,9 +434,11 @@ void StartMainTask(void const * argument)
 //    PrintStackRest();
                          
     
-    
-    /* 查询模式开关状态，如果是自动，则切换为指定的自动模式 */
+    /* 1.查询模式开关状态，如果是自动，则切换为指定的自动模式 */
     ModeControl_CheckAndSetAutoMode( CONTROL_MODE_AUTO_PITCH_ROLL  );
+    
+    /* 2.监视系统处理函数的执行时间，如果长时间没有收到数据或者没有处理，则释放飞行器 */
+    DataProcess_CheackProcessTime( );
     
 #ifdef  DEBUG_ON    
     /* 用于调试 */

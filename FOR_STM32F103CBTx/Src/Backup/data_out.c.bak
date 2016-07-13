@@ -33,11 +33,11 @@ uint8_t ControlOut_Init( void )
 {
   /* 输出俯仰控制电压 */
   //SYS_DEBUG(" DAC_PITCH=%f\n",DAC_PITCH_UOUT_CONTER);  
-  ControlOut_SetDACx_Voltage( DAC_PITCH, DAC_PITCH_UOUT_CONTER );
+  ControlOut_SetDACx_Voltage( DAC_PITCH, DAC_PITCH_UOUT_CENTER );
   
   /* 输出横滚控制电压 */
   //SYS_DEBUG(" DAC_ROLL =%f\n",DAC_ROLL_UOUT_CONTER);  
-  ControlOut_SetDACx_Voltage( DAC_ROLL, DAC_ROLL_UOUT_CONTER );
+  ControlOut_SetDACx_Voltage( DAC_ROLL, DAC_ROLL_UOUT_CENTER );
   
   /* 输出油门控制电压 */
   //SYS_DEBUG(" DAC_THROTTLE =%f\n",DAC_THROTTLE_UOUT_MIN);  
@@ -67,6 +67,22 @@ uint8_t ControlOut_PutControlData( ControlData_t*  pControlData )
 }
 
 
+/**
+  * @brief  输出中位电压，使飞行器保持位置
+  * @note   在与ControlOut_PutControlData不同的线程调用此函数时，需要考虑互斥问题
+  * @retval none
+  */
+void   ControlOut_ReleaseControl(  void  )
+{
+  /* 输出俯仰控制电压 */
+  ControlOut_SetDACx_Voltage( DAC_PITCH, DAC_PITCH_UOUT_CENTER);
+
+  /* 输出横滚控制电压 */
+  ControlOut_SetDACx_Voltage( DAC_ROLL, DAC_ROLL_UOUT_CENTER );
+  
+  /* 输出油门控制电压 */
+  ControlOut_SetDACx_Voltage( DAC_THROTTLE, DAC_THROTTLE_UOUT_CONTER );
+}
 
 
 

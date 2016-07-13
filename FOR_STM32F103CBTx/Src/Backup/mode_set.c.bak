@@ -219,7 +219,7 @@ uint8_t ModeControl_CheckAndSetAutoMode( ControlMode_t auto_mode )
   /* 判断状态是否发生改变 */
   if( gCurrent_SelectPinstate != gLast_SelectPinstate )
   {
-    if( GPIO_PIN_RESET == gCurrent_SelectPinstate )
+    if( MODE_MANUL_SELECT_PIN_STATE == gCurrent_SelectPinstate )
     {
       ModeControl_SelectMode( CONTROL_MODE_MANUL);
     }

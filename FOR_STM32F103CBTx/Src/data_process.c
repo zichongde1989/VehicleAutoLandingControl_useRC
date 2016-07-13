@@ -48,44 +48,46 @@ typedef struct gP_ControlParamStruct
   * @brief  速度界定宏
   */
 /* XY方向移动速度（仅用于定点模式下） */
-#define   DATAPROCESS_XY_MOVE_VELOCITY_MAX        (0.8f)      /*!< 最大移动速度，单位：m/s,TODO::与飞控参数设定一致  */    
-#define   DATAPROCESS_XY_MOVE_VELOCITY_LIMIT      (0.3f)      /*!< 移动速度限制，单位：m/s  */ 
+#define   DATAPROCESS_XY_MOVE_VELOCITY_MAX        (0.80f)      /*!< 最大移动速度，单位：m/s,TODO::与飞控参数设定一致  */    
+#define   DATAPROCESS_XY_MOVE_VELOCITY_LIMIT      (0.32f)      /*!< 移动速度限制，单位：m/s  */ 
 
 /* Z方向移动速度（仅用于定点模式下） */
-#define   DATAPROCESS_Z_MOVE_VELOCITY_MAX         (0.6f)      /*!< 最大移动速度，单位：m/s,TODO::与飞控参数设定一致  */    
-#define   DATAPROCESS_Z_MOVE_VELOCITY_LIMIT       (0.1f)      /*!< 移动速度限制，单位：m/s  */ 
+#define   DATAPROCESS_Z_MOVE_VELOCITY_MAX         (0.60f)      /*!< 最大移动速度，单位：m/s,TODO::与飞控参数设定一致  */    
+#define   DATAPROCESS_Z_MOVE_VELOCITY_LIMIT       (0.20f)      /*!< 移动速度限制，单位：m/s  */ 
 
 
 
 /**
   * @brief 调整参数界定宏
   */
-/* XY方向参数 */
-#define   DATAPROCESS_X_CONTROL_VALUE_P_MIN       (0.0f)           /*!< 比例控制-P参数最小值           */
-#define   DATAPROCESS_X_CONTROL_VALUE_P_MAX       (0.5f)           /*!< 比例控制-P参数最大值           */
-#define   DATAPROCESS_X_CONTROL_VALUE_P_DEFAULT   (0.08f)         /*!< 比例控制-P参数默认值           */      
+/* X方向参数 */
+#define   DATAPROCESS_X_CONTROL_VALUE_P_MIN       (0.00f)           /*!< 比例控制-P参数最小值           */
+#define   DATAPROCESS_X_CONTROL_VALUE_P_MAX       (0.50f)           /*!< 比例控制-P参数最大值           */
+#define   DATAPROCESS_X_CONTROL_VALUE_P_DEFAULT   (0.18f)           /*!< 比例控制-P参数默认值           */      
 //TODO::细致调节DEFAULT参数
 
-/* XY方向参数 */
-#define   DATAPROCESS_Y_CONTROL_VALUE_P_MIN       (0.0f)           /*!< 比例控制-P参数最小值           */
-#define   DATAPROCESS_Y_CONTROL_VALUE_P_MAX       (0.5f)           /*!< 比例控制-P参数最大值           */
-#define   DATAPROCESS_Y_CONTROL_VALUE_P_DEFAULT   (0.08f)         /*!< 比例控制-P参数默认值           */      
+/* Y方向参数 */
+#define   DATAPROCESS_Y_CONTROL_VALUE_P_MIN       (0.00f)           /*!< 比例控制-P参数最小值           */
+#define   DATAPROCESS_Y_CONTROL_VALUE_P_MAX       (0.50f)           /*!< 比例控制-P参数最大值           */
+#define   DATAPROCESS_Y_CONTROL_VALUE_P_DEFAULT   (0.16f)           /*!< 比例控制-P参数默认值           */      
 
 /* Z方向控制参数 */
-#define   DATAPROCESS_Z_CONTROL_VALUE_P_MIN       (0.0f)           /*!< 比例控制-P参数最小值           */
-#define   DATAPROCESS_Z_CONTROL_VALUE_P_MAX       (0.4f )          /*!< 比例控制-P参数最大值           */
-#define   DATAPROCESS_Z_CONTROL_VALUE_P_DEFAULT   (0.05f)         /*!< 比例控制-P参数默认值           */      
+#define   DATAPROCESS_Z_CONTROL_VALUE_P_MIN       (0.00f)           /*!< 比例控制-P参数最小值           */
+#define   DATAPROCESS_Z_CONTROL_VALUE_P_MAX       (0.40f )          /*!< 比例控制-P参数最大值           */
+#define   DATAPROCESS_Z_CONTROL_VALUE_P_DEFAULT   (0.05f)           /*!< 比例控制-P参数默认值           */      
 
 
 
 
 /*************************** 全局变量结构体 ****************************/
 /* 比例控制结构体 */
-P_ControlParam_t*   P_ControlParam_X;
-P_ControlParam_t*   P_ControlParam_Y;
-P_ControlParam_t*   P_ControlParam_Z;
+static P_ControlParam_t*   P_ControlParam_X;
+static P_ControlParam_t*   P_ControlParam_Y;
+static P_ControlParam_t*   P_ControlParam_Z;
 
-
+/* 保存数据处理时间戳 */
+static uint32_t    gLast_Processtime;
+#define   MAX_SENSOR_LOSE_TIME    800 /*!< 最大允许传感器丢失时间(传感器丢失后，数据处理响应停止)，单位:ms  */
 
 /****************************** 函数定义 *******************************/
 /**
@@ -96,7 +98,7 @@ P_ControlParam_t*   P_ControlParam_Z;
   * 
   * @retval float: 控制量
   */
-void   DataProcess_InitPControlParam( P_ControlParam_t* control_param,float param_p )
+static void   DataProcess_InitPControlParam( P_ControlParam_t* control_param,float param_p )
 {
   assert_param( control_param != NULL );
   
@@ -121,7 +123,7 @@ void   DataProcess_InitPControlParam( P_ControlParam_t* control_param,float para
   * @param  pSensorData: 传感器值
   * @retval uint8_t: 判断结果。 安全区内=pdTRUE,安全区外=pdFALSE;
   */
-uint8_t    DataProcess_isInSaftyZone( SensorData_t* pSensorData )
+static uint8_t    DataProcess_isInSaftyZone( SensorData_t* pSensorData )
 {
   assert_param( pSensorData != NULL );
   
@@ -158,7 +160,7 @@ uint8_t    DataProcess_isInSaftyZone( SensorData_t* pSensorData )
   * 
   * @retval float: 控制量
   */
-float   DataProcess_CalcPControlValue( P_ControlParam_t* control_param,int16_t input , int16_t  setpoint  )
+static float   DataProcess_CalcPControlValue( P_ControlParam_t* control_param,int16_t input , int16_t  setpoint  )
 {
   float  err;
   float  out;
@@ -218,7 +220,7 @@ uint8_t   DataProcess_Init( void )
   * @param  pControlData: 输出电压值
   * @retval none
   */
-void   DataProcess_ReleaseControl(  ControlData_t* pControlData   )
+void   DataProcess_SetDataForRelease(  ControlData_t* pControlData   )
 {
   assert_param( pControlData != NULL );
 
@@ -230,6 +232,28 @@ void   DataProcess_ReleaseControl(  ControlData_t* pControlData   )
   
   /* 油门回中，使垂直方向停止移动 */
   pControlData->throttle = DAC_THROTTLE_UOUT_CONTER;
+}
+
+
+
+/**
+  * @brief   监视系统处理函数的执行时间，如果长时间没有收到数据或者没有处理，则释放飞行器 
+  * @note     此函数会操作DAC，注意在其他线程使用时，与主数据输出线程不在同一时间执行
+  */
+void   DataProcess_CheackProcessTime(  void  )
+{
+  uint32_t    current_Processtime;
+
+  /* 获取当前时间 */
+  current_Processtime  = osKernelSysTick();
+  
+  /* 判断是否超时 */
+  if(  (current_Processtime - gLast_Processtime)*portTICK_PERIOD_MS > MAX_SENSOR_LOSE_TIME )
+  {
+    /* 超时则释放控制 */
+    ControlOut_ReleaseControl();
+  }
+  
 }
 
 
@@ -322,16 +346,19 @@ uint8_t   DataProcess_DoProcess( SensorData_t* pSensorData, ControlData_t* pCont
     
     
     /* 输出数据 */
-#if 0   
+#if 1   
     SYS_DEBUG("roll     = (%f/%f)*%f*%d+%f=%f\n", XV_Out, DATAPROCESS_XY_MOVE_VELOCITY_MAX, DAC_ROLL_UOUT_CONTROL_ZONE    ,DAC_ROLL_UOUT_DIRECTIOPN    ,DAC_ROLL_UOUT_CENTER    , pControlData->roll);
     SYS_DEBUG("pitch    = (%f/%f)*%f*%d+%f=%f\n", YV_Out, DATAPROCESS_XY_MOVE_VELOCITY_MAX, DAC_PITCH_UOUT_CONTROL_ZONE   ,DAC_PITCH_UOUT_DIRECTIOPN   ,DAC_PITCH_UOUT_CENTER   , pControlData->pitch);
     SYS_DEBUG("throttle = (%f/%f)*%f*%d+%f=%f\n", ZV_Out, DATAPROCESS_Z_MOVE_VELOCITY_MAX, DAC_THROTTLE_UOUT_CONTROL_ZONE ,DAC_THROTTLE_UOUT_DIRECTIOPN,DAC_THROTTLE_UOUT_CONTER , pControlData->throttle);
 #endif
+    
+    /* 刷新处理时间戳 */
+    gLast_Processtime = osKernelSysTick();
   
   }else
   {
-    /* 使飞行器保持不动 */
-    DataProcess_ReleaseControl( pControlData );
+    /* 填写中位数值，使飞行器保持不动 */
+    DataProcess_SetDataForRelease( pControlData );
     
     /* 输出提示 */
     SYS_DEBUG("Not in safety area, holding...\n");
